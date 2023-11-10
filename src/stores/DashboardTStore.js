@@ -20,7 +20,7 @@ export const useDashboardStore = defineStore("dashboardStore", {
           this.posts = resp.data;
         }
       } catch (err) {
-        if (err.response.status != 200 && 204) {
+        if (err.response.status != 200) {
           this.loadingPost = false;
         }
       }
