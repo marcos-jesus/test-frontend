@@ -2,7 +2,7 @@
 import InputComponent from "src/components/InputComponent.vue";
 import ModalComponent from "src/components/ModalComponent.vue";
 import { useDynamicStore } from "src/stores/DynamicStore";
-import { ref, reactive, onMounted, watch } from "vue";
+import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 
 const dynamic = useDynamicStore();
@@ -137,13 +137,6 @@ function isValidDate(dateString) {
 
   return day > 0 && day <= monthLength[month - 1];
 }
-
-watch(
-  () => formData,
-  (newValue) => {
-    console.log("mudou", newValue);
-  }
-);
 </script>
 <template>
   <div class="flex flex-center" style="height: 100vh">
