@@ -34,7 +34,7 @@ function navigateDashboard() {
             </div>
           </q-btn>
 
-          <q-btn color="primary" push @click="navigateDashboard">
+          <q-btn class="mobile" color="primary" push @click="navigateDashboard">
             <div class="row items-center no-wrap">
               <q-icon left name="map" />
               <div class="text-center">Dashboard</div>
@@ -45,3 +45,10 @@ function navigateDashboard() {
     </q-row>
   </q-page>
 </template>
+<style scoped>
+@media (max-width: 425px) {
+  .mobile {
+    margin-top: 1rem;
+  }
+}
+</style>
