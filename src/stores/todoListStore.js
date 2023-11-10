@@ -1,14 +1,7 @@
 import { defineStore } from "pinia";
 
-export const useCounterStore = defineStore("todolist", {
+export const useTodoList = defineStore("todolist", {
   state: () => ({
-    userActivity: "",
-    isChecked: false,
+    tasks: [],
   }),
-
-  actions: {
-    increment() {
-      this.counter++;
-    },
-  },
 });

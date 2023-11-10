@@ -8,7 +8,10 @@ export const useDashboardStore = defineStore("dashboardStore", {
     posts: [],
   }),
   actions: {
-    clearState() {},
+    clearState() {
+      this.loadingPost = false;
+      this.posts = [];
+    },
 
     async doGetPosts() {
       try {
