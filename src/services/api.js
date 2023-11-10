@@ -5,5 +5,4 @@ const api = axios.create({
   baseURL: "https://jsonplaceholder.typicode.com",
 });
 
-console.log(api.defaults.baseURL);
 export default api;
