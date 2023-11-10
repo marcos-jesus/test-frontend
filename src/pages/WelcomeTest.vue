@@ -17,7 +17,7 @@ function navigateDashboard() {
 <template>
   <q-page padding>
     <q-row>
-      <q-cols>
+      <q-cols class="col-xs">
         <h3 class="flex justify-center">Bem vindo</h3>
         <div class="flex justify-center justify-evenly">
           <q-btn color="deep-orange" push @click="navigateTodoList">

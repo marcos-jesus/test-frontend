@@ -86,6 +86,7 @@ module.exports = configure(function (/* ctx */) {
     framework: {
       components: [],
       directives: [],
+      plugins: [],
     },
 
     // animations: 'all', // --- includes all animations
