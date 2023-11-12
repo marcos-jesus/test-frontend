@@ -2,7 +2,7 @@
 import InputComponent from "src/components/InputComponent.vue";
 import ModalComponent from "src/components/ModalComponent.vue";
 import { useDynamicStore } from "src/stores/DynamicStore";
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import { useRouter } from "vue-router";
 
 const dynamic = useDynamicStore();
@@ -19,6 +19,7 @@ const formData = ref({
   email: "",
   birthDate: "",
   phone: "",
+  neighborhoods: "",
 });
 
 const rules = reactive({
@@ -36,13 +37,11 @@ const rules = reactive({
       "Apenas letras e espaços são permitidos",
   ],
 
-  cpf: [(val) => !!val || "Campo obrigatório"],
-
-  address: [
-    (val) => !!val || "Campo obrigatório",
+  cpf: [
+    (val) => !!val || "CPF obrigatório",
     (val) =>
-      /^[A-Za-z ]+$/.test(val.trim()) ||
-      "Apenas letras e espaços são permitidos",
+      (val && val.replace(/\D+/g, "").length === 11) ||
+      "O CPF deve conter 11 números",
   ],
 
   numberStreet: [
@@ -77,7 +76,11 @@ const rules = reactive({
       "Data inválida ou fora do intervalo permitido (1945-2005)",
   ],
 
-  phone: [[(val) => !!val || "Campo obrigatório"]],
+  phone: [
+    (val) =>
+      (val && val.replace(/\D+/g, "").length === 11) ||
+      "O número deve conter 11 números",
+  ],
 });
 
 const modalText = reactive({
@@ -137,6 +140,24 @@ function isValidDate(dateString) {
 
   return day > 0 && day <= monthLength[month - 1];
 }
+
+watch(
+  () => formData.value.cep,
+  (newValue) => {
+    if (newValue.length === 9) {
+      let formatValue = newValue.replace("-", "");
+
+      dynamic.doGetCep(formatValue);
+
+      if (dynamic.dataCep) {
+        formData.value.street = dynamic.dataCep.logradouro;
+        formData.value.neighborhoods = `${dynamic.dataCep.bairro} ${dynamic.dataCep.localidade}`;
+      }
+    }
+  }
+);
+
+console.log(formData.value.phone.length);
 </script>
 <template>
   <div class="flex flex-center" style="height: 100vh">
@@ -190,21 +211,27 @@ function isValidDate(dateString) {
         <q-step :name="2" title="Endereços" :done="step > 2">
           <q-form @submit="goToStep(3)">
             <InputComponent
+              v-model="formData.cep"
+              mask="#####-###"
+              label="CEP"
+              :rules="rules.cep"
+            />
+            <InputComponent
               v-model="formData.street"
               label="Nome da rua"
-              :rules="rules.address"
+              :disabled="true"
+            />
+            <InputComponent
+              v-model="formData.neighborhoods"
+              label="Bairro"
+              :disabled="true"
             />
             <InputComponent
               v-model="formData.number"
               label="Número da rua"
               :rules="rules.numberStreet"
             />
-            <InputComponent
-              v-model="formData.cep"
-              mask="#####-###"
-              label="CEP"
-              :rules="rules.cep"
-            />
+
             <q-stepper-navigation>
               <q-btn flat label="Continuar" type="submit" color="primary" />
             </q-stepper-navigation>

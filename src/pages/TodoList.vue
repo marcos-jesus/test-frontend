@@ -1,14 +1,15 @@
 <script setup>
+import { useTodoList } from "src/stores/todoListStore";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+const todolist = useTodoList();
 const router = useRouter();
 const newTask = ref("");
-const tasks = ref([]);
 
 const addTask = () => {
   if (newTask.value.trim()) {
-    tasks.value.push({
+    todolist.tasks.push({
       label: newTask.value,
       done: false,
     });
@@ -17,11 +18,11 @@ const addTask = () => {
 };
 
 const markTaskDone = (index) => {
-  tasks.value[index].done = !tasks.value[index].done;
+  todolist.tasks[index].done = !todolist.tasks[index].done;
 };
 
 const removeTask = (index) => {
-  tasks.value.splice(index, 1);
+  todolist.tasks.splice(index, 1);
 };
 
 const backInitial = () => {
@@ -44,7 +45,7 @@ const backInitial = () => {
       @keyup.enter="addTask"
     />
     <q-list>
-      <q-item v-for="(task, index) in tasks" :key="index">
+      <q-item v-for="(task, index) in todolist.tasks" :key="index">
         <q-item-section>
           <q-item-label
             :style="{ textDecoration: task.done ? 'line-through' : 'none' }"
