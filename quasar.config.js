@@ -80,6 +80,13 @@ module.exports = configure(function (/* ctx */) {
     devServer: {
       // https: true
       open: true, // opens browser window automatically
+      proxy: {
+        // O caminho que você deseja redirecionar
+        "/ws": {
+          target: "https://viacep.com.br",
+          changeOrigin: true,
+        },
+      },
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
